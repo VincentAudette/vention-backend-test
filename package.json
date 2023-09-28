@@ -4,9 +4,21 @@
   "description": "Take-home assessment for VOPS team.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "migrate:latest": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback",
+    "migrate:status": "knex migrate:status",
+    "seed:run": "knex seed:run",
+    "test": "NODE_ENV=test jest",
+    "test:setup": "NODE_ENV=test knex migrate:latest && NODE_ENV=test knex seed:run",
+    "dev:setup": "knex migrate:latest && knex seed:run"
   },
-  "author": "Vention",
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/?(*.)+(spec|test).[jt]s?(x)"],
+    "coveragePathIgnorePatterns": ["/node_modules/"]
+  },
+  "author": "Vincent Audette Fork of Vention",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^11.0.0",
@@ -15,6 +27,8 @@
     "pg": "^8.8.0"
   },
   "devDependencies": {
-    "prettier": "2.8.8"
+    "jest": "^29.7.0",
+    "prettier": "2.8.8",
+    "supertest": "^6.3.3"
   }
 }

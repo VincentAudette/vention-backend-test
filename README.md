@@ -1,12 +1,18 @@
 # ⚔️ VENTION QUEST ⚔️
+**Author:** Vincent Audette  
+**Date:** September 28th, 2023
+
+---
 
 **GOAL**
 
 - Complete the Quests listed below.
 - Provide access to your code, e.g. link to a GitHub repo.
 - Aim for performance and code efficiency
-  <br />
-  <br />
+
+
+<details>
+  <summary>🔎 Click to Expand/Collapse Additional Details 🔍</summary>
 
 **TERMINOLOGIES**
 
@@ -66,3 +72,140 @@ Reference diagram from the seed data:
    > ID 12 ➡️ 120
    >
    > Max number of builds = 47
+
+</details>
+
+
+<br>
+
+---
+
+# Starting the Application
+
+## Prerequisites
+Ensure you have Node.js version v18.16.1 installed on your machine.
+
+## Install Dependencies
+Navigate to the root of the project and run the following command to install the necessary dependencies:
+```bash
+npm i
+```
+
+### Environment Variables
+You must create a `.env` file at the root of the project to set up application-specific configurations. Here's a sample of the environment variables you might need:
+
+```env
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_TEST_PORT=5433
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=mysecretpassword
+POSTGRES_DATABASE=vention_quest_db
+POSTGRES_TEST_DATABASE=vention_quest_test_db
+```
+
+⚠️ Ensure that the ports and database names for development and testing environments are distinct.
+
+## Docker Setup
+Ensure Docker is installed on your machine. Then, navigate to the directory containing `docker-compose.yml`.
+
+To build and initiate Docker services, execute:
+```bash
+docker-compose up --build
+```
+
+<details>
+  <summary>If you need to reset Docker and start from scratch, click here for the steps.</summary>
+
+1. **Stop running containers**:
+   ```bash
+   docker-compose down
+   ```
+
+2. **Remove all containers**:
+   ```bash
+   docker rm -f $(docker ps -a -q)
+   ```
+
+3. **Remove all volumes**:
+   ```bash
+   docker volume rm $(docker volume ls -q)
+   ```
+
+4. **Remove the docker-compose created network**:
+   ```bash
+   docker network rm postgres_network
+   ```
+
+5. **Remove all images**:
+   ```bash
+   docker rmi -f $(docker images -q)
+   ```
+
+</details>
+
+## Database Migration and Seeding
+
+### Development
+Migrate and seed the development database:
+```bash
+npm run dev:setup
+```
+
+### Test
+Migrate and seed the test database:
+```bash
+npm run test:setup
+```
+
+## Running the Application
+
+Before starting, ensure Docker, migrations, and seeds are set up.
+
+To launch the application:
+```bash
+npm run start
+```
+
+The server will be accessible at [http://localhost:5001/](http://localhost:5001/).
+
+### API Endpoints
+Here's a concise list of available API endpoints:
+
+1. **Material Endpoints**:
+    - Fetch a material by ID: **GET** - `/api/material/:id`
+    - Update the power of a material: **PUT** - `/api/material/:id/power` with sample body:
+      ```json
+      {
+          "base_power": 80
+      }
+      ```
+
+2. **Weapon Endpoints**:
+    - Maximum buildable quantity for a weapon: **GET** - `/api/weapon/:id/max-buildable`
+    - Fetch a weapon by ID: **GET** - `/api/weapon/:id`
+    - Create a weapon: **POST** - `/api/weapon` with sample body:
+      ```json
+      {
+          "name": "Axe",
+          "material_ids": [9,12],
+          "qty": 1
+      }
+      ```
+    - Delete a weapon by ID: **DELETE** - `/api/weapon/:id`
+    - Update a weapon: **PUT** - `/api/weapon/:id`
+    - List all weapons: **GET** - `/api/weapon/all`
+
+3. **General Endpoints**:
+    - Home: **GET** - `/` - Returns "Vention Quest"
+
+Use [http://localhost:5001](http://localhost:5001) as the base URL for the above endpoints.
+
+### Running Tests
+
+Ensure Docker, migrations, and seeds are set up before running tests.
+
+Execute the following command to run tests:
+```bash
+npm run test
+```
